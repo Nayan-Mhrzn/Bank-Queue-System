@@ -41,7 +41,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <input type="password" name="password" id="password" required>
             </div>
         </div>
-        <button type="submit">Sign In</button>
+        <button type="submit" class="btn-block btn-login">
+            <i class="fa-solid fa-right-to-bracket"></i> Sign In
+        </button>
     </form>
     <div class="spacer"></div>
     <p><a class="muted-link" href="../customer/index.php">Back to customer portal</a></p>

@@ -55,7 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <input type="password" name="password" required placeholder="••••••••">
             </div>
         </div>
-        <button type="submit">
+        <button type="submit" class="btn-block btn-login">
             <i class="fa-solid fa-right-to-bracket"></i> Sign In
         </button>
     </form>

@@ -28,33 +28,9 @@ if ($assigned > 0) {
         <span class="pill"><i class="fa-solid fa-user-check"></i> Hello, <?php echo htmlspecialchars($user_name); ?></span>
     </div>
 
-    <!-- OPTIONAL: if you want staff to still be able to manually select counter,
-         keep this form. If you want strict mode, you can remove this whole form. -->
-    <form method="GET">
-        <label for="counter_id"><i class="fa-solid fa-desktop"></i> Select Your Counter</label>
-        <select name="counter_id" id="counter_id" onchange="this.form.submit()" <?php echo ($assigned > 0) ? 'disabled' : ''; ?>>
-            <option value="">Choose counter...</option>
-            <?php
-            $res = db_query("SELECT c.id, c.name, s.name AS service_name
-                            FROM counters c
-                            JOIN services s ON c.service_id = s.id
-                            WHERE c.is_active = 1");
-            while ($row = $res->fetch_assoc()):
-                $sel = ($selectedCounter === (int)$row['id']) ? 'selected' : '';
-            ?>
-                <option value="<?php echo (int)$row['id']; ?>" <?php echo $sel; ?>>
-                    <?php echo htmlspecialchars($row['name']).' ('.htmlspecialchars($row['service_name']).')'; ?>
-                </option>
-            <?php endwhile; ?>
-        </select>
-
-        <?php if ($assigned > 0): ?>
-            <div class="spacer"></div>
-            <p class="muted-link"><i class="fa-solid fa-lock"></i> Counter is assigned by Admin. You cannot change it.</p>
-        <?php endif; ?>
-    </form>
-
-    <?php if ($selectedCounter):
+    <!-- Strict Mode: Staff cannot select counter. Must be assigned by Admin. -->
+    <?php if ($assigned > 0): 
+        $selectedCounter = $assigned;
         $cRes = db_query(
             "SELECT c.*, s.name AS service_name
              FROM counters c
@@ -136,7 +112,12 @@ if ($assigned > 0) {
         </form>
     <?php else: ?>
         <div class="spacer"></div>
-        <p>Please select a counter (or ask admin to assign you one).</p>
+        <div style="text-align: center; padding: 40px; background: var(--bg-inset); border-radius: var(--radius);">
+            <i class="fa-solid fa-lock" style="font-size: 3rem; color: var(--text-muted); margin-bottom: 20px;"></i>
+            <h3 style="color: var(--text-main); margin-bottom: 10px;">Access Restricted</h3>
+            <p style="color: var(--text-muted);">You have not been assigned to a counter.</p>
+            <p style="color: var(--text-muted);">Please contact an Administrator to assign you a workstation.</p>
+        </div>
     <?php endif; ?>
 </section>
 <?php include __DIR__ . '/../includes/footer.php'; ?>

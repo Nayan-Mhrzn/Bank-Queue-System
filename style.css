@@ -54,7 +54,8 @@
 }
 
 /* --- Dark Mode Override --- */
-[data-theme="dark"] {
+/* --- Dark Mode Override --- */
+html[data-theme="dark"] {
     /* Brand - Slightly lighter for readability against dark */
     --primary: #14b8a6;
     /* Teal 500 */

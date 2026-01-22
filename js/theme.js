@@ -16,17 +16,17 @@ function getSystemTheme() {
 function applyTheme(theme) {
     const root = document.documentElement;
     const icon = document.getElementById('theme-icon');
-    
+
     // Remove previous classes if any (optional, we use data attribute)
-    
+
     let effectiveTheme = theme;
     if (theme === Theme.SYSTEM) {
         effectiveTheme = getSystemTheme();
     }
-    
+
     root.setAttribute('data-theme', effectiveTheme);
     localStorage.setItem('theme', theme);
-    
+
     // Update Icon
     if (icon) {
         icon.className = '';
@@ -39,22 +39,31 @@ function applyTheme(theme) {
 function rotateTheme() {
     const current = localStorage.getItem('theme') || Theme.SYSTEM;
     let next = Theme.SYSTEM;
-    
+
     if (current === Theme.SYSTEM) next = Theme.LIGHT;
     else if (current === Theme.LIGHT) next = Theme.DARK;
     else if (current === Theme.DARK) next = Theme.SYSTEM;
-    
+
     applyTheme(next);
 }
 
 // Init
-(function() {
+(function () {
+    console.log('Theme: Init script running');
     const saved = localStorage.getItem('theme') || Theme.SYSTEM;
+    console.log('Theme: Saved preference is', saved);
+
+    // Apply immediate
     applyTheme(saved);
-    
+
+    // Determine effective theme for logging
+    const effective = (saved === Theme.SYSTEM) ? getSystemTheme() : saved;
+    console.log('Theme: Effective theme applied:', effective);
+
     // Listen for system changes
     window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
         if (localStorage.getItem('theme') === Theme.SYSTEM) {
+            console.log('Theme: System preference changed');
             applyTheme(Theme.SYSTEM); // Re-apply system
         }
     });

@@ -25,7 +25,7 @@ $token = $res->fetch_assoc();
 $service_id = (int)$token['service_id'];
 $created_at = $token['created_at'];
 
-$stmt = $conn->prepare("SELECT COUNT(*) AS ahead FROM tokens WHERE service_id = ? AND status = 'WAITING' AND created_at < ?");
+$stmt = $conn->prepare("SELECT COUNT(*) AS ahead FROM tokens WHERE service_id = ? AND status = 'WAITING' AND created_at < ? AND DATE(created_at) = CURDATE()");
 $stmt->bind_param("is", $service_id, $created_at);
 $stmt->execute();
 $aheadRes = $stmt->get_result();

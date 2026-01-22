@@ -17,6 +17,10 @@
             <a href="../customer/index.php">Customer</a>
             <a href="../staff/login.php">Staff</a>
             <a href="../display/index.php" target="_blank">Display</a>
+            <button class="theme-toggle" onclick="rotateTheme()" title="Toggle Theme">
+                <i id="theme-icon" class="fa-solid fa-desktop"></i>
+            </button>
         </nav>
     </header>
+    <script src="../js/theme.js"></script>
     <main>

@@ -30,7 +30,12 @@ $staffRes = db_query("SELECT u.id, u.name, u.email, u.counter_id,
 ?>
 <section class="card">
   <div class="card-header">
-    <h2>Staff Counter Assignment</h2>
+    <div style="display: flex; gap: 1rem; align-items: center;">
+      <h2>Staff Management</h2>
+      <button onclick="document.getElementById('addStaffModal').style.display='flex'" class="btn-primary" style="font-size: 0.8rem; padding: 0.4rem 0.8rem;">
+        <i class="fa-solid fa-plus"></i> Add Staff
+      </button>
+    </div>
     <span class="pill">Admin</span>
   </div>
 
@@ -41,6 +46,7 @@ $staffRes = db_query("SELECT u.id, u.name, u.email, u.counter_id,
         <th class="col-email"><i class="fa-solid fa-envelope"></i> Email</th>
         <th class="col-counter"><i class="fa-solid fa-desktop"></i> Assigned Counter</th>
         <th class="col-action"><i class="fa-solid fa-pen-to-square"></i> Assign / Update</th>
+        <th style="width: 50px;"></th>
       </tr>
     </thead>
     <tbody>
@@ -67,10 +73,18 @@ $staffRes = db_query("SELECT u.id, u.name, u.email, u.counter_id,
                   </option>
                 <?php endforeach; ?>
               </select>
-              <button type="submit" style="padding: 0.5rem 0.8rem; font-size: 0.8rem; border-radius: 6px;">
+              <button type="submit" style="padding: 0.5rem 0.8rem; font-size: 0.8rem; border-radius: 6px;" title="Save Assignment">
                 <i class="fa-solid fa-floppy-disk"></i>
               </button>
             </form>
+          </td>
+          <td>
+              <form method="POST" action="delete_staff.php" onsubmit="return confirm('Are you sure you want to delete this staff member?');" style="margin:0;">
+                  <input type="hidden" name="user_id" value="<?php echo (int)$st['id']; ?>">
+                  <button type="submit" style="background: var(--danger-color); color: white; border: none; padding: 0.5rem; border-radius: 6px; cursor: pointer;" title="Delete Staff">
+                      <i class="fa-solid fa-trash"></i>
+                  </button>
+              </form>
           </td>
         </tr>
       <?php endwhile; ?>
@@ -80,4 +94,29 @@ $staffRes = db_query("SELECT u.id, u.name, u.email, u.counter_id,
   <div class="spacer"></div>
   <p class="muted-link">Tip: assign one staff to one counter to avoid queue mixing.</p>
 </section>
+
+<!-- Add Staff Modal -->
+<div id="addStaffModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); justify-content: center; align-items: center; z-index: 1000;">
+    <div style="background: var(--card-bg); padding: 2rem; border-radius: 12px; width: 400px; box-shadow: 0 4px 20px rgba(0,0,0,0.2); border: 1px solid var(--border-color);">
+        <h3 style="margin-top: 0; margin-bottom: 1.5rem;">Add New Staff</h3>
+        <form method="POST" action="add_staff.php">
+            <div style="margin-bottom: 1rem;">
+                <label style="display: block; margin-bottom: 0.5rem; font-size: 0.9rem;">Full Name</label>
+                <input type="text" name="name" required style="width: 100%; padding: 0.8rem; border-radius: 6px; border: 1px solid var(--border-color); background: var(--bg-color); color: var(--text-main);">
+            </div>
+            <div style="margin-bottom: 1rem;">
+                <label style="display: block; margin-bottom: 0.5rem; font-size: 0.9rem;">Email Address</label>
+                <input type="email" name="email" required style="width: 100%; padding: 0.8rem; border-radius: 6px; border: 1px solid var(--border-color); background: var(--bg-color); color: var(--text-main);">
+            </div>
+            <div style="margin-bottom: 1.5rem;">
+                <label style="display: block; margin-bottom: 0.5rem; font-size: 0.9rem;">Password</label>
+                <input type="password" name="password" required style="width: 100%; padding: 0.8rem; border-radius: 6px; border: 1px solid var(--border-color); background: var(--bg-color); color: var(--text-main);">
+            </div>
+            <div style="display: flex; gap: 1rem; justify-content: flex-end;">
+                <button type="button" onclick="document.getElementById('addStaffModal').style.display='none'" style="padding: 0.8rem 1.5rem; border-radius: 6px; background: transparent; border: 1px solid var(--border-color); color: var(--text-main); cursor: pointer;">Cancel</button>
+                <button type="submit" class="btn-primary" style="padding: 0.8rem 1.5rem;">Add Staff</button>
+            </div>
+        </form>
+    </div>
+</div>
 <?php include __DIR__ . '/../includes/footer.php'; ?>

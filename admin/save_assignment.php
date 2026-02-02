@@ -21,6 +21,12 @@ if ($uRes->num_rows === 0) die("Staff not found");
 $cRes = db_query("SELECT id FROM counters WHERE id = ? AND is_active = 1", [$counter_id], "i");
 if ($cRes->num_rows === 0) die("Counter not found");
 
+// Clear any existing assignment for this counter
+$clearStmt = $conn->prepare("UPDATE users SET counter_id = NULL WHERE counter_id = ?");
+$clearStmt->bind_param("i", $counter_id);
+$clearStmt->execute();
+$clearStmt->close();
+
 $stmt = $conn->prepare("UPDATE users SET counter_id = ? WHERE id = ?");
 $stmt->bind_param("ii", $counter_id, $user_id);
 $stmt->execute();

@@ -141,9 +141,18 @@ if ($assigned > 0) {
         <h3><i class="fa-solid fa-bullhorn"></i> Call Next Token</h3>
         <form method="POST" action="call_next.php">
             <input type="hidden" name="counter_id" value="<?php echo (int)$selectedCounter; ?>">
-            <button type="submit" <?php echo ($me['status'] !== 'ONLINE') ? 'disabled style="opacity: 0.5; cursor: not-allowed;"' : ''; ?>>
+            <?php
+            $isServing = isset($curRes) && $curRes->num_rows > 0;
+            $isDisabled = ($me['status'] !== 'ONLINE') || $isServing;
+            ?>
+            <button type="submit" <?php echo $isDisabled ? 'disabled style="opacity: 0.5; cursor: not-allowed;"' : ''; ?>>
                 <i class="fa-solid fa-users-viewfinder"></i> Call Next
             </button>
+            <?php if ($isServing): ?>
+                <p style="color: var(--warning-color, #d97706); font-size: 0.9rem; margin-top: 5px;">
+                    Complete current token first.
+                </p>
+            <?php endif; ?>
             <?php if ($me['status'] !== 'ONLINE'): ?>
                 <p style="color: var(--danger-color); font-size: 0.9rem; margin-top: 5px;">
                     You are currently <?php echo htmlspecialchars($me['status']); ?>. Go Online to serve.

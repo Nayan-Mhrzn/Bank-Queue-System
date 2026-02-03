@@ -22,6 +22,16 @@ if ($cRes->num_rows === 0) {
 }
 $service_id = (int)$cRes->fetch_assoc()['service_id'];
 
+// Check if already serving
+$activeRes = db_query(
+    "SELECT id FROM tokens WHERE counter_id = ? AND status IN ('CALLING', 'SERVING') LIMIT 1",
+    [$counter_id],
+    'i'
+);
+if ($activeRes->num_rows > 0) {
+    die('Cannot call next. You are currently serving a customer. Please complete the current token first.');
+}
+
 $nextRes = db_query(
     "SELECT id FROM tokens
      WHERE service_id = ? AND status = 'WAITING'

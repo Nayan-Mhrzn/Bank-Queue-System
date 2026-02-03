@@ -18,7 +18,7 @@ if ($action === 'SERVING') {
     $stmt = $conn->prepare("UPDATE tokens SET status = 'COMPLETED', completed_at = NOW() WHERE id = ?");
     $stmt->bind_param("i", $token_id);
 } elseif ($action === 'CANCELLED') {
-    $stmt = $conn->prepare("UPDATE tokens SET status = 'CANCELLED', cancelled_at = NOW()) WHERE id = ?");
+    $stmt = $conn->prepare("UPDATE tokens SET status = 'CANCELLED', cancelled_at = NOW() WHERE id = ?");
     $stmt->bind_param("i", $token_id);
 } else {
     die('Unknown action');

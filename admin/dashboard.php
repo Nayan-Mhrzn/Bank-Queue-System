@@ -26,7 +26,7 @@ $staffRes = db_query("SELECT u.id, u.name, u.email, u.counter_id, u.status,
                       LEFT JOIN counters c ON u.counter_id = c.id
                       LEFT JOIN services s ON c.service_id = s.id
                       WHERE u.role = 'STAFF' AND u.is_active = 1
-                      ORDER BY u.name");
+                      ORDER BY u.id ASC");
 ?>
 <section class="card">
   <div class="card-header">

@@ -139,6 +139,18 @@ function ensure_schema() {
             }
         }
     }
+
+    // Ensure status column exists in users (Auto-migration)
+    $usersRes = $conn->query("SHOW TABLES LIKE 'users'");
+    if ($usersRes && $usersRes->num_rows > 0) {
+        $hasStatus = $conn->query("SHOW COLUMNS FROM users LIKE 'status'");
+        if (!$hasStatus || $hasStatus->num_rows === 0) {
+            if ($conn->query("ALTER TABLE users ADD COLUMN status ENUM('ONLINE','BREAK','OFFLINE') DEFAULT 'OFFLINE'") !== true) {
+                die('Schema setup failed: ' . $conn->error);
+            }
+            $conn->query("UPDATE users SET status = 'ONLINE' WHERE is_active = 1");
+        }
+    }
 }
 
 ensure_schema();

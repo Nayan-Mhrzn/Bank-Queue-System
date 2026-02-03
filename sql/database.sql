@@ -14,6 +14,7 @@ CREATE TABLE users (
     password_hash VARCHAR(255) NOT NULL,
     role ENUM('ADMIN','STAFF') DEFAULT 'STAFF',
     counter_id INT NULL,
+    status ENUM('ONLINE','BREAK','OFFLINE') DEFAULT 'OFFLINE',
     is_active TINYINT(1) DEFAULT 1
 );
 

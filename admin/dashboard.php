@@ -100,7 +100,7 @@ $staffRes = db_query("SELECT u.id, u.name, u.email, u.counter_id, u.status,
 
 <!-- Add Staff Modal -->
 <div id="addStaffModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); justify-content: center; align-items: center; z-index: 1000;">
-    <div style="background: var(--card-bg); padding: 2rem; border-radius: 12px; width: 400px; box-shadow: 0 4px 20px rgba(0,0,0,0.2); border: 1px solid var(--border-color);">
+    <div style="background: var(--bg-surface); padding: 2rem; border-radius: 12px; width: 400px; box-shadow: 0 4px 20px rgba(0,0,0,0.2); border: 1px solid var(--border-color);">
         <h3 style="margin-top: 0; margin-bottom: 1.5rem;">Add New Staff</h3>
         <form method="POST" action="add_staff.php">
             <div style="margin-bottom: 1rem;">

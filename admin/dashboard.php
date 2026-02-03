@@ -20,7 +20,7 @@ $cRes = db_query("SELECT c.id, c.name, s.name AS service_name
 while ($row = $cRes->fetch_assoc()) $counters[] = $row;
 
 // Load staff users (exclude admins)
-$staffRes = db_query("SELECT u.id, u.name, u.email, u.counter_id,
+$staffRes = db_query("SELECT u.id, u.name, u.email, u.counter_id, u.status,
                              c.name AS counter_name, s.name AS service_name
                       FROM users u
                       LEFT JOIN counters c ON u.counter_id = c.id
@@ -54,6 +54,9 @@ $staffRes = db_query("SELECT u.id, u.name, u.email, u.counter_id,
         <tr>
           <td>
               <div style="font-weight: 600; color: var(--text-main);"><?php echo htmlspecialchars($st['name']); ?></div>
+              <span class="status-pill status-<?php echo strtolower($st['status'] ?? 'ONLINE'); ?>" style="font-size: 0.75rem; padding: 2px 6px;">
+                  <?php echo htmlspecialchars($st['status'] ?? 'ONLINE'); ?>
+              </span>
           </td>
           <td style="font-family: monospace; font-size: 0.9em;"><?php echo htmlspecialchars($st['email']); ?></td>
           <td>

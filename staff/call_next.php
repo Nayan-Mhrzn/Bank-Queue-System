@@ -4,6 +4,13 @@ require __DIR__ . '/../config/db.php';
 if (empty($_SESSION['user_id'])) {
     die('Not logged in');
 }
+
+// Check status
+$uRes = db_query("SELECT status FROM users WHERE id = ?", [$_SESSION['user_id']], "i");
+$uRow = $uRes->fetch_assoc();
+if (($uRow['status'] ?? 'ONLINE') !== 'ONLINE') {
+    die('You are currently ' . htmlspecialchars($uRow['status'] ?? 'OFFLINE') . '. Change status to ONLINE to serve customers.');
+}
 $counter_id = (int)($_POST['counter_id'] ?? 0);
 if (!$counter_id) {
     die('No counter');

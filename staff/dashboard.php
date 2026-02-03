@@ -14,7 +14,7 @@ $user_name = $_SESSION['user_name'];
 $selectedCounter = (int)($_GET['counter_id'] ?? 0);
 
 // Auto-use assigned counter if staff has one
-$meRes = db_query("SELECT counter_id FROM users WHERE id = ?", [$_SESSION['user_id']], "i");
+$meRes = db_query("SELECT counter_id, status FROM users WHERE id = ?", [$_SESSION['user_id']], "i");
 $me = $meRes->fetch_assoc();
 $assigned = (int)($me['counter_id'] ?? 0);
 
@@ -27,6 +27,41 @@ if ($assigned > 0) {
         <h2>Counter Dashboard</h2>
         <span class="pill"><i class="fa-solid fa-user-check"></i> Hello, <?php echo htmlspecialchars($user_name); ?></span>
     </div>
+    
+    <div style="margin: 1rem 0; padding: 1rem; background: var(--bg-color); border-radius: 8px; border: 1px solid var(--border-color); display: flex; align-items: center; justify-content: space-between; gap: 1rem;">
+        <div>
+            <strong>Current Status:</strong>
+            <span id="status-badge" class="status-pill status-<?php echo strtolower($me['status'] ?? 'ONLINE'); ?>">
+                <?php echo htmlspecialchars($me['status'] ?? 'ONLINE'); ?>
+            </span>
+        </div>
+        <div>
+            <select id="status-select" onchange="updateStatus(this.value)" style="padding: 0.5rem; border-radius: 4px; border: 1px solid var(--border-color);">
+                <option value="ONLINE" <?php echo ($me['status'] === 'ONLINE') ? 'selected' : ''; ?>>Online (Active)</option>
+                <option value="BREAK" <?php echo ($me['status'] === 'BREAK') ? 'selected' : ''; ?>>On Break</option>
+                <option value="OFFLINE" <?php echo ($me['status'] === 'OFFLINE') ? 'selected' : ''; ?>>Offline</option>
+            </select>
+        </div>
+    </div>
+
+    <script>
+    function updateStatus(newStatus) {
+        fetch('update_status.php', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ status: newStatus })
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                location.reload(); 
+            } else {
+                alert('Failed to update status: ' + (data.message || 'Unknown error'));
+            }
+        })
+        .catch(err => alert('Error: ' + err));
+    }
+    </script>
 
     <!-- Strict Mode: Staff cannot select counter. Must be assigned by Admin. -->
     <?php if ($assigned > 0): 
@@ -106,9 +141,14 @@ if ($assigned > 0) {
         <h3><i class="fa-solid fa-bullhorn"></i> Call Next Token</h3>
         <form method="POST" action="call_next.php">
             <input type="hidden" name="counter_id" value="<?php echo (int)$selectedCounter; ?>">
-            <button type="submit">
+            <button type="submit" <?php echo ($me['status'] !== 'ONLINE') ? 'disabled style="opacity: 0.5; cursor: not-allowed;"' : ''; ?>>
                 <i class="fa-solid fa-users-viewfinder"></i> Call Next
             </button>
+            <?php if ($me['status'] !== 'ONLINE'): ?>
+                <p style="color: var(--danger-color); font-size: 0.9rem; margin-top: 5px;">
+                    You are currently <?php echo htmlspecialchars($me['status']); ?>. Go Online to serve.
+                </p>
+            <?php endif; ?>
         </form>
     <?php else: ?>
         <div class="spacer"></div>

@@ -1,1 +1,2 @@
 - [2026-02-04 19:17:52] Minor bug fix in token generation
+- [2026-02-04 19:18:00] Update staff dashboard layout

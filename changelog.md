@@ -6,3 +6,4 @@
 - [2026-02-04 19:18:28] Update README documentation
 - [2026-02-04 19:18:35] Update README documentation
 - [2026-02-04 19:18:41] Adjust color scheme for night mode
+- [2026-02-04 19:18:47] Refactor database connection logic

@@ -8,3 +8,4 @@
 - [2026-02-04 19:18:41] Adjust color scheme for night mode
 - [2026-02-04 19:18:47] Refactor database connection logic
 - [2026-02-04 19:18:53] Clean up unused variables
+- [2026-02-04 19:22:00] Update README documentation

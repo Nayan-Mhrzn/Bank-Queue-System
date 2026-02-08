@@ -25,6 +25,12 @@ include __DIR__ . '/../includes/header.php';
                 </select>
             </div>
         </div>
+        <div class="two-column">
+             <div>
+                <label for="email"><i class="fa-solid fa-envelope"></i> Email Address (Optional)</label>
+                <input type="email" name="email" id="email" placeholder="Get notified when it's your turn">
+            </div>
+        </div>
         <div class="spacer"></div>
         <button type="submit">
             <i class="fa-solid fa-ticket"></i> Generate Token

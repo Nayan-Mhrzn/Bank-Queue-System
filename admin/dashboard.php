@@ -35,6 +35,9 @@ $staffRes = db_query("SELECT u.id, u.name, u.email, u.counter_id, u.status,
       <button onclick="document.getElementById('addStaffModal').style.display='flex'" class="btn-primary" style="font-size: 0.8rem; padding: 0.4rem 0.8rem;">
         <i class="fa-solid fa-plus"></i> Add Staff
       </button>
+      <a href="feedback.php" class="btn-primary" style="background: var(--text-muted); font-size: 0.8rem; padding: 0.4rem 0.8rem; text-decoration: none; color: white;">
+        <i class="fa-solid fa-comments"></i> User Feedback
+      </a>
     </div>
     <span class="pill">Admin</span>
   </div>
